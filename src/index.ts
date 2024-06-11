@@ -2,7 +2,7 @@ import cors from "@elysiajs/cors";
 import swagger from "@elysiajs/swagger";
 import { Elysia } from "elysia";
 
-const app = new Elysia({ prefix: "/api/v1"})
+const app = new Elysia({ prefix: "/api/v1" })
   .get("/", () => "Hello Elysia")
   .use(
     cors({
@@ -18,7 +18,7 @@ const app = new Elysia({ prefix: "/api/v1"})
 
         return true;
       },
-    })
+    }),
   )
   .use(
     swagger({
@@ -29,7 +29,7 @@ const app = new Elysia({ prefix: "/api/v1"})
           version: "1.0.0",
         },
       },
-    })
+    }),
   )
   .onError(({ code, error, set }) => {
     switch (code) {
@@ -51,5 +51,5 @@ const app = new Elysia({ prefix: "/api/v1"})
   .listen(3000);
 
 console.log(
-  `🦊 Elysia is running at ${app.server?.hostname}:${app.server?.port}`
+  `🦊 Elysia is running at ${app.server?.hostname}:${app.server?.port}`,
 );
