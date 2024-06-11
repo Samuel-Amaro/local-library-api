@@ -3,13 +3,25 @@
   "version": "1.0.50",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "bun run --watch src/index.ts"
+    "dev": "bun run --watch src/index.ts",
+    "services:up": "docker compose -f docker-compose.yaml up -d",
+    "services:stop": "docker compose -f docker-compose.yaml stop",
+    "services:down": "docker compose -f docker-compose.yaml down",
+    "format": "prettier . --write"
   },
   "dependencies": {
+    "@elysiajs/cors": "^1.0.2",
+    "@elysiajs/swagger": "^1.0.5",
+    "@typescript-eslint/eslint-plugin": "^7.13.0",
+    "@typescript-eslint/parser": "^7.13.0",
     "elysia": "latest"
   },
   "devDependencies": {
-    "bun-types": "latest"
+    "@eslint/js": "^9.4.0",
+    "bun-types": "latest",
+    "eslint": "^9.4.0",
+    "eslint-config-prettier": "^9.1.0",
+    "prettier": "3.3.2"
   },
   "module": "src/index.js"
 }
