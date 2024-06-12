@@ -2,23 +2,33 @@
   "name": "local-library",
   "version": "1.0.50",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "bun run --watch src/index.ts",
+    "test": "bun test --watch",
+    "dev": "bun services:up && bun wait-for-postgres && bun migration:up && bun run --watch src/index.ts",
+    "build": "bun build src/index.ts",
+    "start": "NODE_ENV=production bun src/index.ts",
+    "migration:create": "bun drizzle-kit generate",
+    "migration:up": "bun src/database/migrate.ts",
     "services:up": "docker compose -f docker-compose.yaml up -d",
     "services:stop": "docker compose -f docker-compose.yaml stop",
     "services:down": "docker compose -f docker-compose.yaml down",
-    "format": "prettier . --write"
+    "format": "prettier . --write",
+    "wait-for-postgres": "bun src/scripts/wait-for-postgres.ts"
   },
   "dependencies": {
     "@elysiajs/cors": "^1.0.2",
     "@elysiajs/swagger": "^1.0.5",
     "@typescript-eslint/eslint-plugin": "^7.13.0",
     "@typescript-eslint/parser": "^7.13.0",
-    "elysia": "latest"
+    "drizzle-orm": "^0.31.2",
+    "elysia": "latest",
+    "eslint-plugin-drizzle": "^0.2.3",
+    "pg": "^8.12.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.4.0",
+    "@types/pg": "^8.11.6",
     "bun-types": "latest",
+    "drizzle-kit": "^0.22.7",
     "eslint": "^9.4.0",
     "eslint-config-prettier": "^9.1.0",
     "prettier": "3.3.2"
