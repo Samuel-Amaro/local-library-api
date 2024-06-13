@@ -10,11 +10,11 @@ import {
 import { book } from "./book";
 import { relations } from "drizzle-orm";
 
-export const statusEnum = pgEnum("status", [
-  "Available",
-  "Maintenance",
-  "Loaned",
-  "Reserved",
+export const statusEnum = pgEnum("status_enum", [
+  "available",
+  "maintenance",
+  "loaned",
+  "reserved",
 ]);
 
 export const bookInstance = pgTable("bookInstance", {
@@ -23,7 +23,7 @@ export const bookInstance = pgTable("bookInstance", {
     onDelete: "cascade",
   }),
   imprint: text("imprint").notNull(),
-  status: statusEnum("status").default("Maintenance").notNull(),
+  status: statusEnum("status").default("maintenance").notNull(),
   dueBack: date("dueBack").defaultNow(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("uptadedAt").defaultNow().notNull(),
