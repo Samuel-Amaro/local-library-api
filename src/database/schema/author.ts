@@ -1,11 +1,5 @@
 import { relations } from "drizzle-orm";
-import {
-  pgTable,
-  varchar,
-  serial,
-  timestamp,
-  date,
-} from "drizzle-orm/pg-core";
+import { pgTable, varchar, serial, timestamp, date } from "drizzle-orm/pg-core";
 import { book } from "./book";
 
 export const author = pgTable("author", {
