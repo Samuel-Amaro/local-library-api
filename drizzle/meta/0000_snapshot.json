@@ -1,5 +1,5 @@
 {
-  "id": "736f71d8-4732-47d4-a25c-562e7737525f",
+  "id": "50d2a5b6-b5a9-41fe-89f2-f8de2785f13b",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -155,12 +155,8 @@
           "name": "book_authorId_author_id_fk",
           "tableFrom": "book",
           "tableTo": "author",
-          "columnsFrom": [
-            "authorId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["authorId"],
+          "columnsTo": ["id"],
           "onDelete": "set null",
           "onUpdate": "no action"
         },
@@ -168,12 +164,8 @@
           "name": "book_genreId_genre_id_fk",
           "tableFrom": "book",
           "tableTo": "genre",
-          "columnsFrom": [
-            "genreId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["genreId"],
+          "columnsTo": ["id"],
           "onDelete": "set null",
           "onUpdate": "no action"
         }
@@ -205,11 +197,11 @@
         },
         "status": {
           "name": "status",
-          "type": "status",
+          "type": "status_enum",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": true,
-          "default": "'Maintenance'"
+          "default": "'maintenance'"
         },
         "dueBack": {
           "name": "dueBack",
@@ -239,12 +231,8 @@
           "name": "bookInstance_bookId_book_id_fk",
           "tableFrom": "bookInstance",
           "tableTo": "book",
-          "columnsFrom": [
-            "bookId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["bookId"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -254,15 +242,10 @@
     }
   },
   "enums": {
-    "public.status": {
-      "name": "status",
+    "public.status_enum": {
+      "name": "status_enum",
       "schema": "public",
-      "values": [
-        "Available",
-        "Maintenance",
-        "Loaned",
-        "Reserved"
-      ]
+      "values": ["available", "maintenance", "loaned", "reserved"]
     }
   },
   "schemas": {},

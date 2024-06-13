@@ -1,5 +1,5 @@
 DO $$ BEGIN
- CREATE TYPE "public"."status" AS ENUM('Available', 'Maintenance', 'Loaned', 'Reserved');
+ CREATE TYPE "public"."status_enum" AS ENUM('available', 'maintenance', 'loaned', 'reserved');
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS "bookInstance" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"bookId" integer,
 	"imprint" text NOT NULL,
-	"status" "status" DEFAULT 'Maintenance' NOT NULL,
+	"status" "status_enum" DEFAULT 'maintenance' NOT NULL,
 	"dueBack" date DEFAULT now(),
 	"createdAt" timestamp DEFAULT now() NOT NULL,
 	"uptadedAt" timestamp DEFAULT now() NOT NULL
