@@ -8,9 +8,9 @@
     "start": "NODE_ENV=production bun src/index.ts",
     "migration:create": "bun drizzle-kit generate",
     "migration:up": "bun src/database/migrate.ts",
-    "services:up": "docker compose -f docker-compose.yaml up -d",
-    "services:stop": "docker compose -f docker-compose.yaml stop",
-    "services:down": "docker compose -f docker-compose.yaml down",
+    "services:up": "docker compose -f compose.yaml up -d",
+    "services:stop": "docker compose -f compose.yaml stop",
+    "services:down": "docker compose -f compose.yaml down",
     "format": "prettier . --write",
     "wait-for-postgres": "bun src/scripts/wait-for-postgres.ts"
   },
