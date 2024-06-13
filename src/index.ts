@@ -1,9 +1,18 @@
 import cors from "@elysiajs/cors";
 import swagger from "@elysiajs/swagger";
 import { Elysia } from "elysia";
+import {
+  createAuthor,
+  getAllAuthors,
+  getDetailsAuthor,
+  updateAuthor,
+} from "./controllers/author";
 
 const app = new Elysia({ prefix: "/api/v1" })
-  .get("/", () => "Hello Elysia")
+  .use(createAuthor)
+  .use(getAllAuthors)
+  .use(getDetailsAuthor)
+  .use(updateAuthor)
   .use(
     cors({
       credentials: true,
