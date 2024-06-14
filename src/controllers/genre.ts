@@ -1,6 +1,6 @@
 import Elysia, { t } from "elysia";
-import { GenreModel } from "../../models/Model.Genre";
-import { GenreService } from "../../services/genre/Service.Genre";
+import { GenreModel } from "../models/Model.Genre";
+import { GenreService } from "../services/Service.Genre";
 
 export const createGenre = new Elysia().use(GenreModel).post(
   "/genre",

@@ -1,6 +1,6 @@
 import { asc, eq } from "drizzle-orm";
-import { db } from "../../database/connection";
-import { author } from "../../database/schema";
+import { db } from "../database/connection";
+import { author } from "../database/schema";
 
 export abstract class AuthorService {
   static async create(values: {

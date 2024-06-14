@@ -1,6 +1,6 @@
 import Elysia, { t } from "elysia";
-import { AuthorModel } from "../../models/Model.Author";
-import { AuthorService } from "../../services/author/service";
+import { AuthorModel } from "../models/Model.Author";
+import { AuthorService } from "../services/Service.Author";
 
 export const createAuthor = new Elysia().use(AuthorModel).post(
   "/author",

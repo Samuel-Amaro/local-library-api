@@ -1,6 +1,6 @@
 import { asc, eq } from "drizzle-orm";
-import { db } from "../../database/connection";
-import { genre } from "../../database/schema";
+import { db } from "../database/connection";
+import { genre } from "../database/schema";
 
 export abstract class GenreService {
   static async create(values: { name: string }) {
