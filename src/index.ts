@@ -3,16 +3,30 @@ import swagger from "@elysiajs/swagger";
 import { Elysia } from "elysia";
 import {
   createAuthor,
+  deleteAuthor,
   getAllAuthors,
   getDetailsAuthor,
   updateAuthor,
 } from "./controllers/author";
+import {
+  createGenre,
+  deleteGenre,
+  getAllGenre,
+  getDetailsGenre,
+  updateGenre,
+} from "./controllers/genre";
 
 const app = new Elysia({ prefix: "/api/v1" })
   .use(createAuthor)
   .use(getAllAuthors)
   .use(getDetailsAuthor)
   .use(updateAuthor)
+  .use(deleteAuthor)
+  .use(createGenre)
+  .use(getDetailsGenre)
+  .use(getAllGenre)
+  .use(updateGenre)
+  .use(deleteGenre)
   .use(
     cors({
       credentials: true,
