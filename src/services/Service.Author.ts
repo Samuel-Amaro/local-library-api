@@ -18,13 +18,15 @@ export abstract class AuthorService {
       dateOfDeath?: string | null;
       firstName: string;
       familyName: string;
-      updatedAt?: Date | undefined;
     },
     id: number,
   ) {
     return await db
       .update(author)
-      .set(values)
+      .set({
+        ...values,
+        updatedAt: new Date(),
+      })
       .where(eq(author.id, id))
       .returning();
   }

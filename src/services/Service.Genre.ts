@@ -20,7 +20,10 @@ export abstract class GenreService {
   static async update(values: { name: string }, id: number) {
     return await db
       .update(genre)
-      .set(values)
+      .set({
+        ...values,
+        updatedAt: new Date(),
+      })
       .where(eq(genre.id, id))
       .returning();
   }
