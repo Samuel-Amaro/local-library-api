@@ -1,5 +1,5 @@
 import Elysia, { t } from "elysia";
-import { AuthorModel } from "../../models/author";
+import { AuthorModel } from "../../models/Model.Author";
 import { AuthorService } from "../../services/author/service";
 
 export const createAuthor = new Elysia().use(AuthorModel).post(
@@ -16,7 +16,7 @@ export const getAllAuthors = new Elysia().get("/author", async () => {
   return await AuthorService.getAll();
 });
 
-export const getDetailsAuthor = new Elysia().get(
+export const getDetailsAuthor = new Elysia().use(AuthorModel).get(
   "/author/:id",
   async ({ params: { id }, set }) => {
     const author = await AuthorService.getDetails(id);
@@ -32,9 +32,7 @@ export const getDetailsAuthor = new Elysia().get(
     return author;
   },
   {
-    params: t.Object({
-      id: t.Numeric(),
-    }),
+    params: "author.params",
   },
 );
 
@@ -55,13 +53,11 @@ export const updateAuthor = new Elysia().use(AuthorModel).put(
   },
   {
     body: "author.update",
-    params: t.Object({
-      id: t.Numeric(),
-    }),
+    params: "author.params",
   },
 );
 
-export const deleteAuthor = new Elysia().delete(
+export const deleteAuthor = new Elysia().use(AuthorModel).delete(
   "/author/:id",
   async ({ params: { id }, set }) => {
     const deletedAuthor = await AuthorService.delete(id);
@@ -77,8 +73,6 @@ export const deleteAuthor = new Elysia().delete(
     set.status = 201;
   },
   {
-    params: t.Object({
-      id: t.Numeric(),
-    }),
+    params: "author.params",
   },
 );
