@@ -12,7 +12,8 @@
     "services:stop": "docker compose -f compose.yaml stop",
     "services:down": "docker compose -f compose.yaml down",
     "format": "prettier . --write",
-    "wait-for-postgres": "bun src/scripts/wait-for-postgres.ts"
+    "wait-for-postgres": "bun src/scripts/wait-for-postgres.ts",
+    "seed": "bun run src/database/seed.ts"
   },
   "dependencies": {
     "@elysiajs/cors": "^1.0.2",
