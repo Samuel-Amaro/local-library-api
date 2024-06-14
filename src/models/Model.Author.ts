@@ -62,7 +62,6 @@ export const AuthorModel = new Elysia({ name: "Model.Author" }).model({
           "Enter the date in the following format: YYYY-MM-DD in date of death",
       }),
     ),
-    updatedAt: t.Optional(t.Date()),
   }),
   "author.params": t.Object({
     id: t.Numeric(),
