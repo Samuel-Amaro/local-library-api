@@ -52,8 +52,6 @@ export const updateGenre = new Elysia().use(GenreModel).put(
     }
 
     set.status = 201;
-
-    return genre;
   },
   {
     body: "genre.put.update",
