@@ -4,8 +4,9 @@ import { AuthorService } from "../services/Service.Author";
 
 export const createAuthor = new Elysia().use(AuthorModel).post(
   "/author",
-  async ({ body }) => {
+  async ({ body, set }) => {
     await AuthorService.create(body);
+    set.status = 201;
   },
   {
     body: "author.create",
@@ -69,8 +70,6 @@ export const deleteAuthor = new Elysia().use(AuthorModel).delete(
         message: "Author not found :(",
       };
     }
-
-    set.status = 201;
   },
   {
     params: "author.params",
