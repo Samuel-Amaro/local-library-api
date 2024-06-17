@@ -1,6 +1,7 @@
 import Elysia, { t } from "elysia";
 import { GenreModel } from "../models/Model.Genre";
 import { GenreService } from "../services/Service.Genre";
+import { BookService } from "../services/Service.Book";
 
 export const createGenre = new Elysia().use(GenreModel).post(
   "/genre",
@@ -31,7 +32,10 @@ export const getDetailsGenre = new Elysia().use(GenreModel).get(
       };
     }
 
-    return genre;
+    return {
+      books: await BookService.getAllBooksFromGenre(id),
+      genre: genre,
+    };
   },
   {
     params: "genre.params",
