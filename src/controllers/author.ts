@@ -1,6 +1,7 @@
 import Elysia, { t } from "elysia";
 import { AuthorModel } from "../models/Model.Author";
 import { AuthorService } from "../services/Service.Author";
+import { BookService } from "../services/Service.Book";
 
 export const createAuthor = new Elysia().use(AuthorModel).post(
   "/author",
@@ -30,7 +31,10 @@ export const getDetailsAuthor = new Elysia().use(AuthorModel).get(
       };
     }
 
-    return author;
+    return {
+      books: await BookService.getAllBooksFromAuthor(id),
+      author: author,
+    };
   },
   {
     params: "author.params",
