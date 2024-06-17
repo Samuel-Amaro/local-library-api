@@ -15,6 +15,13 @@ import {
   getDetailsGenre,
   updateGenre,
 } from "./controllers/genre";
+import {
+  createBook,
+  deleteBook,
+  getAllBooks,
+  getDetailsBook,
+  updateBook,
+} from "./controllers/book";
 
 const app = new Elysia({ prefix: "/api/v1" })
   .use(createAuthor)
@@ -27,6 +34,11 @@ const app = new Elysia({ prefix: "/api/v1" })
   .use(getAllGenre)
   .use(updateGenre)
   .use(deleteGenre)
+  .use(createBook)
+  .use(getAllBooks)
+  .use(getDetailsBook)
+  .use(updateBook)
+  .use(deleteBook)
   .use(
     cors({
       credentials: true,
