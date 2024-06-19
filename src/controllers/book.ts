@@ -3,6 +3,7 @@ import { BookModel } from "../models/Model.Book";
 import { AuthorService } from "../services/Service.Author";
 import { GenreService } from "../services/Service.Genre";
 import { BookService } from "../services/Service.Book";
+import { ServiceUtils } from "../services/Service.Utils";
 
 export const createBook = new Elysia().use(BookModel).post(
   "/book",
@@ -61,34 +62,61 @@ export const getDetailsBook = new Elysia().use(BookModel).get(
 export const updateBook = new Elysia().use(BookModel).put(
   "/book/:id",
   async ({ params: { id }, set, body }) => {
-    const author = await AuthorService.getDetails(body.authorId);
-    const genre = await GenreService.getDetails(body.genreId);
+    const changes = ServiceUtils.partialBody<
+      {
+        title: string;
+        isbn: string;
+        summary: string;
+        authorId: number;
+        genreId: number;
+      },
+      typeof body
+    >(body);
 
-    if (!author) {
-      set.status = 404;
+    if(!ServiceUtils.hasKeys(changes)) {
+      set.status = 400;
+      
       return {
-        code: "NOT_FOUND",
-        message: "Author not found :(",
+        message: "Body request not valid",
       };
-    } else if (!genre) {
-      set.status = 404;
-      return {
-        code: "NOT_FOUND",
-        message: "Genre not found :(",
-      };
-    } else {
-      const book = await BookService.update(body, id);
+    }else if(changes.authorId) {
+      const author = await AuthorService.getDetails(changes.authorId);
 
-      if (book.length === 0) {
+      if (!author) {
         set.status = 404;
         return {
           code: "NOT_FOUND",
-          message: "Book not found :(",
+          message: `Author with id: ${changes.authorId} not found :(`,
+        };
+      }
+    }else if(changes.genreId) {
+      const genre = await GenreService.getDetails(changes.genreId);
+
+      if (!genre) {
+        set.status = 404;
+        return {
+          code: "NOT_FOUND",
+          message: `Genre with id: ${changes.genreId} not found :(`,
         };
       }
     }
+    
+    const book = await BookService.update(changes, id);
+
+    if (book.length === 0) {
+      set.status = 404;
+      return {
+        code: "NOT_FOUND",
+        message: `Book with id: ${id} not found :(`,
+      };
+    }
 
     set.status = 201;
+
+    return {
+      message: `Book with id: ${id} updated successfully!`,
+      status: 201,
+    };
   },
   {
     body: "model.update",

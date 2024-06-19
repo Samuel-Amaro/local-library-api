@@ -77,11 +77,11 @@ export abstract class BookService {
 
   static async update(
     values: {
-      title: string;
-      isbn: string;
-      summary: string;
-      authorId: number;
-      genreId: number;
+      title?: string;
+      isbn?: string;
+      summary?: string;
+      authorId?: number;
+      genreId?: number;
     },
     id: number,
   ) {
