@@ -12,7 +12,7 @@ export const BookModel = new Elysia({ name: "Model.Book" }).model({
       minLength: 1,
       maxLength: 17,
       pattern: `^(?!\\s*$).+`,
-      default: "isbn book",
+      default: "isbn book with format 000-0-00-000000-0",
       error: "isbn field cannot be empty, it is required",
     }),
     summary: t.String({
@@ -41,7 +41,7 @@ export const BookModel = new Elysia({ name: "Model.Book" }).model({
         minLength: 1,
         maxLength: 17,
         pattern: `^(?!\\s*$).+`,
-        default: "isbn book",
+        default: "isbn book with format 000-0-00-000000-0",
         error: "isbn field cannot be empty, it is required",
       }),
     ),
