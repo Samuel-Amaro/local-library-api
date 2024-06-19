@@ -73,13 +73,13 @@ export const updateBook = new Elysia().use(BookModel).put(
       typeof body
     >(body);
 
-    if(!ServiceUtils.hasKeys(changes)) {
+    if (!ServiceUtils.hasKeys(changes)) {
       set.status = 400;
-      
+
       return {
         message: "Body request not valid",
       };
-    }else if(changes.authorId) {
+    } else if (changes.authorId) {
       const author = await AuthorService.getDetails(changes.authorId);
 
       if (!author) {
@@ -89,7 +89,7 @@ export const updateBook = new Elysia().use(BookModel).put(
           message: `Author with id: ${changes.authorId} not found :(`,
         };
       }
-    }else if(changes.genreId) {
+    } else if (changes.genreId) {
       const genre = await GenreService.getDetails(changes.genreId);
 
       if (!genre) {
@@ -100,7 +100,7 @@ export const updateBook = new Elysia().use(BookModel).put(
         };
       }
     }
-    
+
     const book = await BookService.update(changes, id);
 
     if (book.length === 0) {

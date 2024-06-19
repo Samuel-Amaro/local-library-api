@@ -34,7 +34,7 @@ export const BookModel = new Elysia({ name: "Model.Book" }).model({
         pattern: `^(?!\\s*$).+`,
         default: "Title book",
         error: "title field cannot be empty, it is required",
-      })
+      }),
     ),
     isbn: t.Optional(
       t.String({
@@ -43,7 +43,7 @@ export const BookModel = new Elysia({ name: "Model.Book" }).model({
         pattern: `^(?!\\s*$).+`,
         default: "isbn book",
         error: "isbn field cannot be empty, it is required",
-      })
+      }),
     ),
     summary: t.Optional(
       t.String({
@@ -51,13 +51,9 @@ export const BookModel = new Elysia({ name: "Model.Book" }).model({
         pattern: `^(?!\\s*$).+`,
         default: "summary book",
         error: "summary field cannot be empty, it is required",
-      })
+      }),
     ),
-    authorId: t.Optional(
-      t.Numeric({ minimum: 1 })
-    ),
-    genreId: t.Optional(
-      t.Numeric({ minimum: 1 })
-    ),
+    authorId: t.Optional(t.Numeric({ minimum: 1 })),
+    genreId: t.Optional(t.Numeric({ minimum: 1 })),
   }),
 });
