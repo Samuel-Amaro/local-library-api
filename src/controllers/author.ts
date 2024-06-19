@@ -73,6 +73,11 @@ export const updateAuthor = new Elysia().use(AuthorModel).put(
     }
 
     set.status = 201;
+
+    return {
+      message: `Author with id: ${id} updated successfully!`,
+      status: 201,
+    };
   },
   {
     body: "author.update",
