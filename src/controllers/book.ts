@@ -8,6 +8,16 @@ import { ServiceUtils } from "../services/Service.Utils";
 export const createBook = new Elysia().use(BookModel).post(
   "/book",
   async ({ body, set }) => {
+    const book = await BookService.getFrom(body.title, body.isbn);
+
+    if (book) {
+      set.status = 422;
+      return {
+        code: "UNPROCESSABLE_ENTITY",
+        message: `book with title: ${body.title} and isbn: ${body.isbn} already exists!`,
+      };
+    }
+
     const author = AuthorService.getDetails(body.authorId);
     const genre = GenreService.getDetails(body.genreId);
 

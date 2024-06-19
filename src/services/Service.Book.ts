@@ -1,6 +1,6 @@
 import { db } from "../database/connection";
 import { author, book, genre } from "../database/schema";
-import { asc, eq } from "drizzle-orm";
+import { asc, eq, ilike, or } from "drizzle-orm";
 
 export abstract class BookService {
   static async create(values: {
@@ -94,5 +94,14 @@ export abstract class BookService {
 
   static async delete(id: number) {
     return await db.delete(book).where(eq(book.id, id)).returning();
+  }
+
+  static async getFrom(title?: string, isbn?: string) {
+    return await db.query.book.findFirst({
+      where: or(
+        title ? ilike(book.title, title) : undefined,
+        isbn ? ilike(book.isbn, isbn) : undefined,
+      ),
+    });
   }
 }
