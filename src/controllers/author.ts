@@ -2,6 +2,7 @@ import Elysia, { t } from "elysia";
 import { AuthorModel } from "../models/Model.Author";
 import { AuthorService } from "../services/Service.Author";
 import { BookService } from "../services/Service.Book";
+import { ServiceUtils } from "../services/Service.Utils";
 
 export const createAuthor = new Elysia().use(AuthorModel).post(
   "/author",
@@ -44,13 +45,30 @@ export const getDetailsAuthor = new Elysia().use(AuthorModel).get(
 export const updateAuthor = new Elysia().use(AuthorModel).put(
   "/author/:id",
   async ({ body, params: { id }, set }) => {
-    const updatedAuthor = await AuthorService.update(body, id);
+    const changes = ServiceUtils.partialBody<
+      {
+        firstName: string;
+        familyName: string;
+        dateOfBirth: string;
+        dateOfDeath: string;
+      },
+      typeof body
+    >(body);
+
+    if (!ServiceUtils.hasKeys(changes)) {
+      set.status = 400;
+      return {
+        message: "Body request not valid",
+      };
+    }
+
+    const updatedAuthor = await AuthorService.update(changes, id);
 
     if (updatedAuthor.length === 0) {
       set.status = 404;
       return {
         code: "NOT_FOUND",
-        message: "Author not found :(",
+        message: `Author withh id ${id} not found :(`,
       };
     }
 

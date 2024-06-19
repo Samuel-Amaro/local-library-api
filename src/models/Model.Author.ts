@@ -33,19 +33,23 @@ export const AuthorModel = new Elysia({ name: "Model.Author" }).model({
     ),
   }),
   "author.update": t.Object({
-    firstName: t.String({
-      pattern: `^(?!\\s*$).+`,
-      minLength: 1,
-      maxLength: 100,
-      default: "First Name",
-      error: "the first name cannot be empty",
-    }),
-    familyName: t.String({
-      pattern: `^(?!\\s*$).+`,
-      minLength: 1,
-      maxLength: 100,
-      default: "the family name cannot be empty",
-    }),
+    firstName: t.Optional(
+      t.String({
+        pattern: `^(?!\\s*$).+`,
+        minLength: 1,
+        maxLength: 100,
+        default: "First Name",
+        error: "the first name cannot be empty",
+      }),
+    ),
+    familyName: t.Optional(
+      t.String({
+        pattern: `^(?!\\s*$).+`,
+        minLength: 1,
+        maxLength: 100,
+        default: "the family name cannot be empty",
+      }),
+    ),
     dateOfBirth: t.Optional(
       t.String({
         pattern: `^(?:[0-9]\\d{3})-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])$`,

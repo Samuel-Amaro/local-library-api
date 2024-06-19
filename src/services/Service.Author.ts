@@ -14,10 +14,10 @@ export abstract class AuthorService {
 
   static async update(
     values: {
-      dateOfBirth?: string | null;
-      dateOfDeath?: string | null;
-      firstName: string;
-      familyName: string;
+      dateOfBirth?: string;
+      dateOfDeath?: string;
+      firstName?: string;
+      familyName?: string;
     },
     id: number,
   ) {
