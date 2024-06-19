@@ -1,4 +1,4 @@
-import { asc, eq } from "drizzle-orm";
+import { asc, eq, ilike } from "drizzle-orm";
 import { db } from "../database/connection";
 import { genre } from "../database/schema";
 
@@ -30,5 +30,11 @@ export abstract class GenreService {
 
   static async delete(id: number) {
     return await db.delete(genre).where(eq(genre.id, id)).returning();
+  }
+
+  static async getFromName(name: string) {
+    return await db.query.genre.findFirst({
+      where: ilike(genre.name, name),
+    });
   }
 }

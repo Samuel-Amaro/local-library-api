@@ -7,6 +7,16 @@ import { ServiceUtils } from "../services/Service.Utils";
 export const createGenre = new Elysia().use(GenreModel).post(
   "/genre",
   async ({ body, set }) => {
+    const genre = await GenreService.getFromName(body.name);
+
+    if (genre) {
+      set.status = 422;
+      return {
+        code: "UNPROCESSABLE_ENTITY",
+        message: `genre with name: ${body.name} already exists!`,
+      };
+    }
+
     await GenreService.create(body);
 
     set.status = 201;
@@ -98,6 +108,3 @@ export const deleteGenre = new Elysia().use(GenreModel).delete(
     params: "genre.params",
   },
 );
-
-//TODO: IMPEDIR DADOS DE SEREM REPETIDOS
-//TODO: IMPEDIR DE CRIAR UM DADO JA EXISTENTE
