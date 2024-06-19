@@ -1,4 +1,4 @@
-import { asc, eq } from "drizzle-orm";
+import { asc, eq, ilike, or } from "drizzle-orm";
 import { db } from "../database/connection";
 import { author } from "../database/schema";
 
@@ -42,6 +42,15 @@ export abstract class AuthorService {
   static async getDetails(id: number) {
     return await db.query.author.findFirst({
       where: eq(author.id, id),
+    });
+  }
+
+  static async getFromName(firstName: string, familyName: string) {
+    return await db.query.author.findFirst({
+      where: or(
+        ilike(author.firstName, firstName),
+        ilike(author.familyName, familyName),
+      ),
     });
   }
 }

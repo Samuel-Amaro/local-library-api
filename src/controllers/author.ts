@@ -7,6 +7,19 @@ import { ServiceUtils } from "../services/Service.Utils";
 export const createAuthor = new Elysia().use(AuthorModel).post(
   "/author",
   async ({ body, set }) => {
+    const author = await AuthorService.getFromName(
+      body.firstName,
+      body.familyName,
+    );
+
+    if (author) {
+      set.status = 422;
+      return {
+        code: "UNPROCESSABLE_ENTITY",
+        message: `author with first name: ${body.firstName} is family name: ${body.familyName} already exists!`,
+      };
+    }
+
     await AuthorService.create(body);
     set.status = 201;
   },
