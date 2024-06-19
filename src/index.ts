@@ -22,6 +22,14 @@ import {
   getDetailsBook,
   updateBook,
 } from "./controllers/book";
+import {
+  createBookInstance,
+  deleteBookInstance,
+  getAllBookInstance,
+  getAllInstancesFromBook,
+  getDetailsBookInstance,
+  updateBookInstance,
+} from "./controllers/bookinstance";
 
 const app = new Elysia({ prefix: "/api/v1" })
   .use(createAuthor)
@@ -39,6 +47,12 @@ const app = new Elysia({ prefix: "/api/v1" })
   .use(getDetailsBook)
   .use(updateBook)
   .use(deleteBook)
+  .use(createBookInstance)
+  .use(getAllBookInstance)
+  .use(getDetailsBookInstance)
+  .use(getAllInstancesFromBook)
+  .use(updateBookInstance)
+  .use(deleteBookInstance)
   .use(
     cors({
       credentials: true,
