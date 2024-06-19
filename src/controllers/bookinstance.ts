@@ -2,6 +2,7 @@ import Elysia from "elysia";
 import { BookInstancerModel, Status } from "../models/Model.BookInstance";
 import { BookInstanceService } from "../services/Service.BookInstance";
 import { BookService } from "../services/Service.Book";
+import { ServiceUtils } from "../services/Service.Utils";
 
 export const createBookInstance = new Elysia().use(BookInstancerModel).post(
   "/bookinstance",
@@ -75,14 +76,23 @@ export const getAllInstancesFromBook = new Elysia().use(BookInstancerModel).get(
 export const updateBookInstance = new Elysia().use(BookInstancerModel).put(
   "/bookinstance/:id",
   async ({ params: { id }, body, set }) => {
-    const changes: Partial<{
-      bookId: number;
-      status: Status;
-      dueBack: string;
-      imprint: string;
-    }> = body;
+    const changes = ServiceUtils.partialBody<
+      {
+        bookId: number;
+        status: Status;
+        dueBack: string;
+        imprint: string;
+      },
+      typeof body
+    >(body);
 
-    if (changes.bookId) {
+    if (!ServiceUtils.hasKeys(changes)) {
+      set.status = 400;
+
+      return {
+        message: "Body request not valid",
+      };
+    } else if (changes.bookId) {
       const book = await BookService.getDetails(changes.bookId);
 
       if (book.length === 0) {
