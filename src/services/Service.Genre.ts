@@ -17,7 +17,7 @@ export abstract class GenreService {
     });
   }
 
-  static async update(values: { name: string }, id: number) {
+  static async update(values: { name?: string }, id: number) {
     return await db
       .update(genre)
       .set({

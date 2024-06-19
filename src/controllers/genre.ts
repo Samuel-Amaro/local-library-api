@@ -2,6 +2,7 @@ import Elysia, { t } from "elysia";
 import { GenreModel } from "../models/Model.Genre";
 import { GenreService } from "../services/Service.Genre";
 import { BookService } from "../services/Service.Book";
+import { ServiceUtils } from "../services/Service.Utils";
 
 export const createGenre = new Elysia().use(GenreModel).post(
   "/genre",
@@ -45,17 +46,34 @@ export const getDetailsGenre = new Elysia().use(GenreModel).get(
 export const updateGenre = new Elysia().use(GenreModel).put(
   "/genre/:id",
   async ({ body, params: { id }, set }) => {
-    const genre = await GenreService.update(body, id);
+    const changes = ServiceUtils.partialBody<{ name: string }, typeof body>(
+      body,
+    );
+
+    if (!ServiceUtils.hasKeys(changes)) {
+      set.status = 400;
+
+      return {
+        message: "Body request not valid",
+      };
+    }
+
+    const genre = await GenreService.update(changes, id);
 
     if (genre.length === 0) {
       set.status = 404;
       return {
         code: "NOT_FOUND",
-        message: "Genre not found :(",
+        message: `Genre with id: ${id} not found :(`,
       };
     }
 
     set.status = 201;
+
+    return {
+      message: `Genre with id: ${id} updated successfully!`,
+      status: 201,
+    };
   },
   {
     body: "genre.put.update",
@@ -80,3 +98,6 @@ export const deleteGenre = new Elysia().use(GenreModel).delete(
     params: "genre.params",
   },
 );
+
+//TODO: IMPEDIR DADOS DE SEREM REPETIDOS
+//TODO: IMPEDIR DE CRIAR UM DADO JA EXISTENTE
