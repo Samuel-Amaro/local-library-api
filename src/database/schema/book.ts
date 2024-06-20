@@ -14,7 +14,7 @@ import { bookInstance } from "./bookinstance";
 export const book = pgTable("book", {
   id: serial("id").primaryKey(),
   title: text("title").notNull(),
-  isbn: varchar("isbn", { length: 17 }).notNull(),
+  isbn: varchar("isbn", { length: 17 }).unique().notNull(),
   summary: text("summary").notNull(),
   authorId: integer("authorId").references(() => author.id, {
     onDelete: "set null",

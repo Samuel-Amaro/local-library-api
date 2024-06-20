@@ -1,0 +1,1 @@
+ALTER TABLE "bookInstance" DROP CONSTRAINT "bookInstance_imprint_unique";

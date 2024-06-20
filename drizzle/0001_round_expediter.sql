@@ -1,0 +1,1 @@
+ALTER TABLE "book" ADD CONSTRAINT "book_isbn_unique" UNIQUE("isbn");

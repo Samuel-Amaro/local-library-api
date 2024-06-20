@@ -4,7 +4,7 @@ import { book } from "./book";
 
 export const genre = pgTable("genre", {
   id: serial("id").primaryKey(),
-  name: varchar("name", { length: 100 }).notNull(),
+  name: varchar("name", { length: 100 }).unique().notNull(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("uptadedAt").defaultNow().notNull(),
 });
