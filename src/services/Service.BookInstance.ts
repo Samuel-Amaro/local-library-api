@@ -1,7 +1,7 @@
 import { db } from "../database/connection";
 import { bookInstance } from "../database/schema";
 import { Status } from "../models/Model.BookInstance";
-import { asc, eq } from "drizzle-orm";
+import { and, asc, eq, ilike } from "drizzle-orm";
 
 export abstract class BookInstanceService {
   static async create(values: {
@@ -53,5 +53,14 @@ export abstract class BookInstanceService {
       .delete(bookInstance)
       .where(eq(bookInstance.id, id))
       .returning();
+  }
+
+  static async getFrom(bookId: number, imprint: string) {
+    return await db.query.bookInstance.findFirst({
+      where: and(
+        eq(bookInstance.bookId, bookId),
+        ilike(bookInstance.imprint, imprint)
+      )
+    })
   }
 }

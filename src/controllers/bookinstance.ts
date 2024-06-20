@@ -7,6 +7,16 @@ import { ServiceUtils } from "../services/Service.Utils";
 export const createBookInstance = new Elysia().use(BookInstancerModel).post(
   "/bookinstance",
   async ({ body, set }) => {
+    const bookInstance = await BookInstanceService.getFrom(body.bookId, body.imprint);
+
+    if(bookInstance) {
+      set.status = 422;
+      return {
+        code: "UNPROCESSABLE_ENTITY",
+        message: `bookInstance com bookId: ${body.bookId} is imprint: ${body.imprint} already exists!`,
+      };
+    }
+
     const book = await BookService.getDetails(body.bookId);
 
     if (book.length === 0) {
