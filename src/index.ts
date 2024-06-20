@@ -30,6 +30,7 @@ import {
   getDetailsBookInstance,
   updateBookInstance,
 } from "./controllers/bookinstance";
+import { catalog } from "./controllers/catalog";
 
 const app = new Elysia({ prefix: "/api/v1" })
   .use(createAuthor)
@@ -53,6 +54,7 @@ const app = new Elysia({ prefix: "/api/v1" })
   .use(getAllInstancesFromBook)
   .use(updateBookInstance)
   .use(deleteBookInstance)
+  .use(catalog)
   .use(
     cors({
       credentials: true,

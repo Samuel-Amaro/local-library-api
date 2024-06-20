@@ -59,8 +59,14 @@ export abstract class BookInstanceService {
     return await db.query.bookInstance.findFirst({
       where: and(
         eq(bookInstance.bookId, bookId),
-        ilike(bookInstance.imprint, imprint)
-      )
-    })
+        ilike(bookInstance.imprint, imprint),
+      ),
+    });
+  }
+
+  static async getAllBookInstanceFromAvailable() {
+    return await db.query.bookInstance.findMany({
+      where: eq(bookInstance.status, "available"),
+    });
   }
 }

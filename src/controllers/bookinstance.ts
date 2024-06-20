@@ -7,9 +7,12 @@ import { ServiceUtils } from "../services/Service.Utils";
 export const createBookInstance = new Elysia().use(BookInstancerModel).post(
   "/bookinstance",
   async ({ body, set }) => {
-    const bookInstance = await BookInstanceService.getFrom(body.bookId, body.imprint);
+    const bookInstance = await BookInstanceService.getFrom(
+      body.bookId,
+      body.imprint,
+    );
 
-    if(bookInstance) {
+    if (bookInstance) {
       set.status = 422;
       return {
         code: "UNPROCESSABLE_ENTITY",
