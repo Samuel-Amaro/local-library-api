@@ -31,8 +31,26 @@ import {
   updateBookInstance,
 } from "./controllers/bookinstance";
 import { catalog } from "./controllers/catalog";
+import { authenticate } from "./controllers/authenticate";
 
 const app = new Elysia({ prefix: "/api/v1" })
+  .use(
+    cors({
+      credentials: true,
+      allowedHeaders: ["content-type"],
+      methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "HEAD", "OPTIONS"],
+      origin: (request): boolean => {
+        const origin = request.headers.get("origin");
+
+        if (!origin) {
+          return false;
+        }
+
+        return true;
+      },
+    }),
+  )
+  .use(authenticate)
   .use(createAuthor)
   .use(getAllAuthors)
   .use(getDetailsAuthor)
@@ -55,22 +73,6 @@ const app = new Elysia({ prefix: "/api/v1" })
   .use(updateBookInstance)
   .use(deleteBookInstance)
   .use(catalog)
-  .use(
-    cors({
-      credentials: true,
-      allowedHeaders: ["content-type"],
-      methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "HEAD", "OPTIONS"],
-      origin: (request): boolean => {
-        const origin = request.headers.get("origin");
-
-        if (!origin) {
-          return false;
-        }
-
-        return true;
-      },
-    }),
-  )
   .use(
     swagger({
       path: "/docs",
