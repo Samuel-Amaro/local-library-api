@@ -28,9 +28,15 @@ export const createAuthor = new Elysia().use(AuthorModel).post(
   },
 );
 
-export const getAllAuthors = new Elysia().get("/author", async () => {
-  return await AuthorService.getAll();
-});
+export const getAllAuthors = new Elysia().use(AuthorModel).get(
+  "/author",
+  async ({ query }) => {
+    return await AuthorService.getAll(query.page, query.pageSize, query.order);
+  },
+  {
+    query: "author.query",
+  },
+);
 
 export const getDetailsAuthor = new Elysia().use(AuthorModel).get(
   "/author/:id",

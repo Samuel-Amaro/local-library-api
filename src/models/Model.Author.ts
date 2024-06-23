@@ -1,5 +1,10 @@
 import Elysia, { t } from "elysia";
 
+export enum Order {
+  asc = "asc",
+  desc = "desc",
+}
+
 export const AuthorModel = new Elysia({ name: "Model.Author" }).model({
   "author.create": t.Object({
     firstName: t.String({
@@ -70,4 +75,11 @@ export const AuthorModel = new Elysia({ name: "Model.Author" }).model({
   "author.params": t.Object({
     id: t.Numeric(),
   }),
+  "author.query": t.Partial(
+    t.Object({
+      order: t.Optional(t.Enum(Order, { default: Order.asc })),
+      page: t.Optional(t.Numeric({ minimum: 1 })),
+      pageSize: t.Optional(t.Numeric({ minimum: 1 })),
+    }),
+  ),
 });
