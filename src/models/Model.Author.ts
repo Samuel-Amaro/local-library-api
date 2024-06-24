@@ -1,9 +1,5 @@
 import Elysia, { t } from "elysia";
-
-export enum Order {
-  asc = "asc",
-  desc = "desc",
-}
+import { Order } from "../types";
 
 export const AuthorModel = new Elysia({ name: "Model.Author" }).model({
   "author.create": t.Object({

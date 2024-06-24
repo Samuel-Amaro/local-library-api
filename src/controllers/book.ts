@@ -45,9 +45,15 @@ export const createBook = new Elysia().use(BookModel).post(
   },
 );
 
-export const getAllBooks = new Elysia().get("/book", async () => {
-  return await BookService.getAll();
-});
+export const getAllBooks = new Elysia().use(BookModel).get(
+  "/book",
+  async ({ query }) => {
+    return await BookService.getAll(query.page, query.pageSize, query.order);
+  },
+  {
+    query: "model.book.query",
+  },
+);
 
 export const getDetailsBook = new Elysia().use(BookModel).get(
   "/book/:id",

@@ -1,4 +1,5 @@
 import Elysia, { t } from "elysia";
+import { Order } from "../types";
 
 export const BookModel = new Elysia({ name: "Model.Book" }).model({
   "model.create.body": t.Object({
@@ -56,4 +57,11 @@ export const BookModel = new Elysia({ name: "Model.Book" }).model({
     authorId: t.Optional(t.Numeric({ minimum: 1 })),
     genreId: t.Optional(t.Numeric({ minimum: 1 })),
   }),
+  "model.book.query": t.Partial(
+    t.Object({
+      order: t.Optional(t.Enum(Order, { default: Order.asc })),
+      page: t.Optional(t.Numeric({ minimum: 1 })),
+      pageSize: t.Optional(t.Numeric({ minimum: 1 })),
+    }),
+  ),
 });
