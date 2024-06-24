@@ -26,7 +26,6 @@ import {
   createBookInstance,
   deleteBookInstance,
   getAllBookInstance,
-  getAllInstancesFromBook,
   getDetailsBookInstance,
   updateBookInstance,
 } from "./controllers/bookinstance";
@@ -69,7 +68,6 @@ const app = new Elysia({ prefix: "/api/v1" })
   .use(createBookInstance)
   .use(getAllBookInstance)
   .use(getDetailsBookInstance)
-  .use(getAllInstancesFromBook)
   .use(updateBookInstance)
   .use(deleteBookInstance)
   .use(catalog)
