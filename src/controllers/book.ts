@@ -4,6 +4,7 @@ import { AuthorService } from "../services/Service.Author";
 import { GenreService } from "../services/Service.Genre";
 import { BookService } from "../services/Service.Book";
 import { ServiceUtils } from "../services/Service.Utils";
+import { BookInstanceService } from "../services/Service.BookInstance";
 
 export const createBook = new Elysia().use(BookModel).post(
   "/book",
@@ -57,7 +58,7 @@ export const getAllBooks = new Elysia().use(BookModel).get(
 
 export const getDetailsBook = new Elysia().use(BookModel).get(
   "/book/:id",
-  async ({ params: { id }, set }) => {
+  async ({ params: { id }, set, query }) => {
     const book = await BookService.getDetails(id);
 
     if (book.length === 0) {
@@ -68,10 +69,16 @@ export const getDetailsBook = new Elysia().use(BookModel).get(
       };
     }
 
-    return book[0];
+    const bookInstances = await BookInstanceService.getAllInstancesFromBook(id, query.page, query.pageSize, query.order);
+
+    return {
+      ...book[0],
+      bookInstances
+    };
   },
   {
     params: "model.params",
+    query: "model.book.query"
   },
 );
 
