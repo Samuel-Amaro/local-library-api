@@ -40,7 +40,7 @@ export const getAllAuthors = new Elysia().use(AuthorModel).get(
 
 export const getDetailsAuthor = new Elysia().use(AuthorModel).get(
   "/author/:id",
-  async ({ params: { id }, set }) => {
+  async ({ params: { id }, set, query }) => {
     const author = await AuthorService.getDetails(id);
 
     if (!author) {
@@ -52,12 +52,18 @@ export const getDetailsAuthor = new Elysia().use(AuthorModel).get(
     }
 
     return {
-      books: await BookService.getAllBooksFromAuthor(id),
+      books: await BookService.getAllBooksFromAuthor(
+        id,
+        query.page,
+        query.pageSize,
+        query.order,
+      ),
       author: author,
     };
   },
   {
     params: "author.params",
+    query: "author.query",
   },
 );
 
