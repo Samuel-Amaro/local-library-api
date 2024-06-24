@@ -50,13 +50,13 @@ export const getDetailsGenre = new Elysia().use(GenreModel).get(
     }
 
     return {
+      ...genre,
       books: await BookService.getAllBooksFromGenre(
         id,
         query.page,
         query.pageSize,
         query.order,
       ),
-      genre: genre,
     };
   },
   {

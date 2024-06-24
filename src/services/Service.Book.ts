@@ -127,7 +127,7 @@ export abstract class BookService {
       page,
       pageSize,
       order,
-      data: result,
+      data,
     };
   }
 

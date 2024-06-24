@@ -52,13 +52,13 @@ export const getDetailsAuthor = new Elysia().use(AuthorModel).get(
     }
 
     return {
+      ...author,
       books: await BookService.getAllBooksFromAuthor(
         id,
         query.page,
         query.pageSize,
         query.order,
-      ),
-      author: author,
+      )
     };
   },
   {
