@@ -1,11 +1,5 @@
 import Elysia, { t } from "elysia";
-
-export enum Status {
-  available = "available",
-  maintenance = "maintenance",
-  loaned = "loaned",
-  reserved = "reserved",
-}
+import { Order, Status } from "../types";
 
 export const BookInstancerModel = new Elysia({
   name: "Model.BookInstance",
@@ -49,4 +43,11 @@ export const BookInstancerModel = new Elysia({
       }),
     ),
   }),
+  "model.bookinstance.query": t.Partial(
+    t.Object({
+      order: t.Optional(t.Enum(Order, { default: Order.asc })),
+      page: t.Optional(t.Numeric({ minimum: 1 })),
+      pageSize: t.Optional(t.Numeric({ minimum: 1 })),
+    }),
+  ),
 });
