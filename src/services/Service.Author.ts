@@ -1,7 +1,8 @@
 import { asc, desc, eq, ilike, or, sql, SQLWrapper } from "drizzle-orm";
 import { db } from "../database/connection";
 import { author } from "../database/schema";
-import { Order } from "../models/Model.Author";
+import { Order } from "../types";
+import { ORDER, PAGE, PAGE_SIZE } from "../Utils";
 
 export abstract class AuthorService {
   static async create(values: {
@@ -37,9 +38,9 @@ export abstract class AuthorService {
   }
 
   static async getAll(
-    page: number = 1,
-    pageSize: number = 5,
-    order: Order = Order.asc,
+    page: number = PAGE,
+    pageSize: number = PAGE_SIZE,
+    order: Order = ORDER,
   ) {
     const data = await db.query.author.findMany({
       extras: {
