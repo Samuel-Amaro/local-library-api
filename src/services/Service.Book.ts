@@ -52,14 +52,26 @@ export abstract class BookService {
     });
   }
 
-  static async getAllBooksFromAuthor(idAuthor: number) {
+  static async getAllBooksFromAuthor(
+    idAuthor: number,
+    page: number = PAGE,
+    pageSize: number = PAGE_SIZE,
+    order: Order = ORDER,
+  ) {
     const result = await db
       .select()
       .from(book)
       .innerJoin(author, eq(book.authorId, author.id))
       .innerJoin(genre, eq(book.genreId, genre.id))
-      .where(eq(book.authorId, idAuthor));
-    return result.map((value) => {
+      .where(eq(book.authorId, idAuthor))
+      .limit(pageSize)
+      .offset((page - 1) * pageSize)
+      .orderBy(
+        order === "asc" ? asc(book.title) : desc(book.title),
+        order === "asc" ? asc(book.id) : desc(book.id),
+      );
+
+    const data = result.map((value) => {
       return {
         id: value.book.id,
         createdAt: value.book.createdAt,
@@ -71,16 +83,35 @@ export abstract class BookService {
         genre: value.genre.name,
       };
     });
+
+    return {
+      page,
+      pageSize,
+      order,
+      data,
+    };
   }
 
-  static async getAllBooksFromGenre(idGenre: number) {
+  static async getAllBooksFromGenre(
+    idGenre: number,
+    page: number = PAGE,
+    pageSize: number = PAGE_SIZE,
+    order: Order = ORDER,
+  ) {
     const result = await db
       .select()
       .from(book)
       .innerJoin(author, eq(book.authorId, author.id))
       .innerJoin(genre, eq(book.genreId, genre.id))
-      .where(eq(book.genreId, idGenre));
-    return result.map((value) => {
+      .where(eq(book.genreId, idGenre))
+      .limit(pageSize)
+      .offset((page - 1) * pageSize)
+      .orderBy(
+        order === "asc" ? asc(book.title) : desc(book.title),
+        order === "asc" ? asc(book.id) : desc(book.id),
+      );
+
+    const data = result.map((value) => {
       return {
         id: value.book.id,
         createdAt: value.book.createdAt,
@@ -88,10 +119,16 @@ export abstract class BookService {
         title: value.book.title,
         isbn: value.book.isbn,
         summary: value.book.summary,
-        genre: value.genre.name,
         authorId: value.book.authorId,
       };
     });
+
+    return {
+      page,
+      pageSize,
+      order,
+      data: result,
+    };
   }
 
   static async update(
