@@ -1,4 +1,5 @@
 import Elysia, { t } from "elysia";
+import { Order } from "../types";
 
 export const GenreModel = new Elysia({ name: "Model.Genre" }).model({
   "genre.create.body": t.Object({
@@ -24,4 +25,11 @@ export const GenreModel = new Elysia({ name: "Model.Genre" }).model({
       }),
     ),
   }),
+  "genre.query": t.Partial(
+    t.Object({
+      order: t.Optional(t.Enum(Order, { default: Order.asc })),
+      page: t.Optional(t.Numeric({ minimum: 1 })),
+      pageSize: t.Optional(t.Numeric({ minimum: 1 })),
+    }),
+  ),
 });

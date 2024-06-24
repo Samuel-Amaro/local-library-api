@@ -1,4 +1,4 @@
-import Elysia, { t } from "elysia";
+import Elysia from "elysia";
 import { GenreModel } from "../models/Model.Genre";
 import { GenreService } from "../services/Service.Genre";
 import { BookService } from "../services/Service.Book";
@@ -26,13 +26,19 @@ export const createGenre = new Elysia().use(GenreModel).post(
   },
 );
 
-export const getAllGenre = new Elysia().get("/genre", async () => {
-  return await GenreService.getAll();
-});
+export const getAllGenre = new Elysia().use(GenreModel).get(
+  "/genre",
+  async ({ query }) => {
+    return await GenreService.getAll(query.page, query.pageSize, query.order);
+  },
+  {
+    query: "genre.query",
+  },
+);
 
 export const getDetailsGenre = new Elysia().use(GenreModel).get(
   "/genre/:id",
-  async ({ params: { id }, set }) => {
+  async ({ params: { id }, set, query }) => {
     const genre = await GenreService.getDetails(id);
 
     if (!genre) {
@@ -44,12 +50,18 @@ export const getDetailsGenre = new Elysia().use(GenreModel).get(
     }
 
     return {
-      books: await BookService.getAllBooksFromGenre(id),
+      books: await BookService.getAllBooksFromGenre(
+        id,
+        query.page,
+        query.pageSize,
+        query.order,
+      ),
       genre: genre,
     };
   },
   {
     params: "genre.params",
+    query: "genre.query",
   },
 );
 

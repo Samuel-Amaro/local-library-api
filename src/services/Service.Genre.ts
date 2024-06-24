@@ -1,14 +1,33 @@
-import { asc, eq, ilike } from "drizzle-orm";
+import { asc, desc, eq, ilike } from "drizzle-orm";
 import { db } from "../database/connection";
 import { genre } from "../database/schema";
+import { ORDER, PAGE, PAGE_SIZE } from "../Utils";
+import { Order } from "../types";
 
 export abstract class GenreService {
   static async create(values: { name: string }) {
     await db.insert(genre).values(values);
   }
 
-  static async getAll() {
-    return db.select().from(genre).orderBy(asc(genre.name));
+  static async getAll(
+    page: number = PAGE,
+    pageSize: number = PAGE_SIZE,
+    order: Order = ORDER,
+  ) {
+    const data = await db.query.genre.findMany({
+      limit: pageSize,
+      offset: (page - 1) * pageSize,
+      orderBy: [
+        order === "asc" ? asc(genre.name) : desc(genre.name),
+        order === "asc" ? asc(genre.id) : desc(genre.id),
+      ],
+    });
+    return {
+      page,
+      pageSize,
+      order,
+      data,
+    };
   }
 
   static async getDetails(id: number) {
