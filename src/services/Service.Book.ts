@@ -1,6 +1,8 @@
 import { db } from "../database/connection";
 import { author, book, genre } from "../database/schema";
-import { asc, eq, ilike, or } from "drizzle-orm";
+import { asc, desc, eq, ilike, or } from "drizzle-orm";
+import { Order } from "../types";
+import { ORDER, PAGE, PAGE_SIZE } from "../Utils";
 
 export abstract class BookService {
   static async create(values: {
@@ -13,8 +15,25 @@ export abstract class BookService {
     await db.insert(book).values(values);
   }
 
-  static async getAll() {
-    return await db.select().from(book).orderBy(asc(book.title));
+  static async getAll(
+    page: number = PAGE,
+    pageSize: number = PAGE_SIZE,
+    order: Order = ORDER,
+  ) {
+    const data = await db.query.book.findMany({
+      limit: pageSize,
+      offset: (page - 1) * pageSize,
+      orderBy: [
+        order === "asc" ? asc(book.title) : desc(book.title),
+        order === "asc" ? asc(book.id) : desc(book.id),
+      ],
+    });
+    return {
+      page,
+      pageSize,
+      order,
+      data,
+    };
   }
 
   static async getDetails(id: number) {
