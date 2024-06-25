@@ -13,10 +13,10 @@ export const catalog = new Elysia().get("/catalog", async () => {
     await BookInstanceService.getAllBookInstanceFromAvailable();
 
   return {
-    books: books.length,
-    authors: authors.length,
-    genres: genres.length,
-    copies: bookInstances.length,
-    copiesAvailable: bookInstancesAvailable.length,
+    books: books.totalItems,
+    authors: authors.totalItems,
+    genres: genres.totalItems,
+    copies: bookInstances.totalItems,
+    copiesAvailable: bookInstancesAvailable.totalItems,
   };
 });
