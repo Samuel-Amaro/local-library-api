@@ -106,3 +106,31 @@ A API será projetada para suportar as seguintes operações:
 - Catálogo da Biblioteca
 
   - [x] Obter Catálogo: Recuperar o catálogo completo de livros disponíveis na biblioteca, incluindo informações sobre autores, instâncias e gêneros.
+
+## Estrutura
+
+Em termos de estrutura, baseamos na documentação do **Elysia** e suas recomendações, fizemos uma mesclagem da estrutura de arquivos recomendada para **Elysia** se você não preferir estritamente uma convenção específica, junto com o padrão MVC, pórem e um MVC adaptado para o **Elysia**
+
+### Estrutura de arquivos recomendada para Elysia
+
+- src - Qualquer arquivo associado ao desenvolvimento do servidor Elysia.
+  - index.ts – Ponto de entrada para seu servidor Elysia, local ideal para configurar plugin global
+  - setup.ts - Composto por vários plugins para serem usados ​​como Localizador de Serviços
+  - controllers - Instâncias que encapsulam vários endpoints
+  - libs - Funções utilitárias
+  - models - Data Type Objects (DTOs) para instância Elysia
+  - types - tipo TypeScript compartilhado, se necessário
+- test - Arquivo de teste para servidor Elysia
+
+### Elysia Com padrão MVC
+
+Como foi dito, Elysia é uma estrutura agnóstica de padrões e é apenas um guia de recomendação para lidar com Elysia com MVC.
+
+- **src** - Qualquer arquivo associado ao desenvolvimento do servidor Elysia.
+  - **index.ts** – Ponto de entrada para seu servidor Elysia, local ideal para configurar plugin global
+  - **controllers** - Instâncias que encapsulam vários endpoints
+  - **services** - Serviço é um conjunto de funções utilitárias/auxiliares para cada módulo, no nosso caso, instância de Elysia. Qualquer lógica que possa ser desacoplada do controlador pode estar ativa dentro de um Service.
+  - **models** - Data Type Objects (DTOs) para instância Elysia, Recomendamos usar o modelo de referência Elysia ou criar um objeto ou classe de DTOs para cada módulo.
+  - **types** - tipo TypeScript compartilhado, se necessário
+  - **database** - Irá conter a lógica para criar uma conexão com o banco de dados, um script de migração e as definições do esquema, e um scrip de seed.
+  - **scripts** / **Utils.ts** - scripts utilitarios, opcionalmente para uma lógica ainda mais granular relacionada a um recurso
