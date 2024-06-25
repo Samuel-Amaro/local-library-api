@@ -69,16 +69,21 @@ export const getDetailsBook = new Elysia().use(BookModel).get(
       };
     }
 
-    const bookInstances = await BookInstanceService.getAllInstancesFromBook(id, query.page, query.pageSize, query.order);
+    const bookInstances = await BookInstanceService.getAllInstancesFromBook(
+      id,
+      query.page,
+      query.pageSize,
+      query.order,
+    );
 
     return {
       ...book[0],
-      bookInstances
+      bookInstances,
     };
   },
   {
     params: "model.params",
-    query: "model.book.query"
+    query: "model.book.query",
   },
 );
 

@@ -58,7 +58,7 @@ export const getDetailsAuthor = new Elysia().use(AuthorModel).get(
         query.page,
         query.pageSize,
         query.order,
-      )
+      ),
     };
   },
   {
