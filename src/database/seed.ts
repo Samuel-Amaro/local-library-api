@@ -1,4 +1,4 @@
-import { Status } from "../models/Model.BookInstance";
+import { Status } from "../types";
 import { db } from "./connection";
 import { author, book, bookInstance, genre } from "./schema";
 
