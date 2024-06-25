@@ -3,6 +3,7 @@ import { db } from "../database/connection";
 import { author } from "../database/schema";
 import { Order } from "../types";
 import { ORDER, PAGE, PAGE_SIZE } from "../Utils";
+import { ServiceUtils } from "./Service.Utils";
 
 export abstract class AuthorService {
   static async create(values: {
@@ -42,6 +43,7 @@ export abstract class AuthorService {
     pageSize: number = PAGE_SIZE,
     order: Order = ORDER,
   ) {
+    const dataWithoutLimit = await db.select().from(author);
     const data = await db.query.author.findMany({
       extras: {
         fullName:
@@ -62,9 +64,15 @@ export abstract class AuthorService {
         order === "asc" ? asc(author.id) : desc(author.id),
       ],
     });
+
     return {
       page,
       pageSize,
+      totalPages: ServiceUtils.calculateTotalPages(
+        dataWithoutLimit.length,
+        pageSize,
+      ),
+      totalItems: dataWithoutLimit.length,
       order,
       data,
     };

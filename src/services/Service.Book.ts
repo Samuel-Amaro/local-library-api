@@ -3,6 +3,7 @@ import { author, book, genre } from "../database/schema";
 import { asc, desc, eq, ilike, or } from "drizzle-orm";
 import { Order } from "../types";
 import { ORDER, PAGE, PAGE_SIZE } from "../Utils";
+import { ServiceUtils } from "./Service.Utils";
 
 export abstract class BookService {
   static async create(values: {
@@ -20,6 +21,8 @@ export abstract class BookService {
     pageSize: number = PAGE_SIZE,
     order: Order = ORDER,
   ) {
+    const dataWithoutLimit = await db.select().from(book);
+    const totalPages = Math.ceil(dataWithoutLimit.length / pageSize);
     const data = await db.query.book.findMany({
       limit: pageSize,
       offset: (page - 1) * pageSize,
@@ -28,9 +31,15 @@ export abstract class BookService {
         order === "asc" ? asc(book.id) : desc(book.id),
       ],
     });
+
     return {
       page,
       pageSize,
+      totalPages: ServiceUtils.calculateTotalPages(
+        dataWithoutLimit.length,
+        pageSize,
+      ),
+      totalItems: dataWithoutLimit.length,
       order,
       data,
     };
@@ -58,6 +67,13 @@ export abstract class BookService {
     pageSize: number = PAGE_SIZE,
     order: Order = ORDER,
   ) {
+    const resultWithoutLimit = await db
+      .select()
+      .from(book)
+      .innerJoin(author, eq(book.authorId, author.id))
+      .innerJoin(genre, eq(book.genreId, genre.id))
+      .where(eq(book.authorId, idAuthor));
+
     const result = await db
       .select()
       .from(book)
@@ -87,6 +103,11 @@ export abstract class BookService {
     return {
       page,
       pageSize,
+      totalPages: ServiceUtils.calculateTotalPages(
+        resultWithoutLimit.length,
+        pageSize,
+      ),
+      totalItems: resultWithoutLimit.length,
       order,
       data,
     };
@@ -98,6 +119,13 @@ export abstract class BookService {
     pageSize: number = PAGE_SIZE,
     order: Order = ORDER,
   ) {
+    const resultWithoutLimit = await db
+      .select()
+      .from(book)
+      .innerJoin(author, eq(book.authorId, author.id))
+      .innerJoin(genre, eq(book.genreId, genre.id))
+      .where(eq(book.genreId, idGenre));
+
     const result = await db
       .select()
       .from(book)
@@ -126,6 +154,11 @@ export abstract class BookService {
     return {
       page,
       pageSize,
+      totalPages: ServiceUtils.calculateTotalPages(
+        resultWithoutLimit.length,
+        pageSize,
+      ),
+      totalItems: resultWithoutLimit.length,
       order,
       data,
     };

@@ -3,6 +3,7 @@ import { bookInstance } from "../database/schema";
 import { and, asc, desc, eq, ilike } from "drizzle-orm";
 import { Order, Status } from "../types";
 import { ORDER, PAGE, PAGE_SIZE } from "../Utils";
+import { ServiceUtils } from "./Service.Utils";
 
 export abstract class BookInstanceService {
   static async create(values: {
@@ -19,6 +20,8 @@ export abstract class BookInstanceService {
     pageSize: number = PAGE_SIZE,
     order: Order = ORDER,
   ) {
+    const dataWithoutLimit = await db.select().from(bookInstance);
+
     const data = await db.query.bookInstance.findMany({
       limit: pageSize,
       offset: (page - 1) * pageSize,
@@ -33,6 +36,11 @@ export abstract class BookInstanceService {
     return {
       page,
       pageSize,
+      totalPages: ServiceUtils.calculateTotalPages(
+        dataWithoutLimit.length,
+        pageSize,
+      ),
+      totalItems: dataWithoutLimit.length,
       order,
       data,
     };
@@ -44,9 +52,17 @@ export abstract class BookInstanceService {
     });
   }
 
-  static async getAllInstancesFromBook(idBook: number, page: number = PAGE,
+  static async getAllInstancesFromBook(
+    idBook: number,
+    page: number = PAGE,
     pageSize: number = PAGE_SIZE,
-    order: Order = ORDER) {
+    order: Order = ORDER,
+  ) {
+    const dataWithoutLimit = await db
+      .select()
+      .from(bookInstance)
+      .where(eq(bookInstance.bookId, idBook));
+
     const data = await db.query.bookInstance.findMany({
       where: eq(bookInstance.bookId, idBook),
       limit: pageSize,
@@ -58,11 +74,17 @@ export abstract class BookInstanceService {
         order === "asc" ? asc(bookInstance.id) : desc(bookInstance.id),
       ],
     });
+
     return {
       page,
       pageSize,
+      totalPages: ServiceUtils.calculateTotalPages(
+        dataWithoutLimit.length,
+        pageSize,
+      ),
+      totalItems: dataWithoutLimit.length,
       order,
-      data
+      data,
     };
   }
 
@@ -98,9 +120,38 @@ export abstract class BookInstanceService {
     });
   }
 
-  static async getAllBookInstanceFromAvailable() {
-    return await db.query.bookInstance.findMany({
+  static async getAllBookInstanceFromAvailable(
+    page: number = PAGE,
+    pageSize: number = PAGE_SIZE,
+    order: Order = ORDER,
+  ) {
+    const dataWithoutLimit = await db
+      .select()
+      .from(bookInstance)
+      .where(eq(bookInstance.status, "available"));
+
+    const data = await db.query.bookInstance.findMany({
       where: eq(bookInstance.status, "available"),
+      limit: pageSize,
+      offset: (page - 1) * pageSize,
+      orderBy: [
+        order === "asc"
+          ? asc(bookInstance.createdAt)
+          : desc(bookInstance.createdAt),
+        order === "asc" ? asc(bookInstance.id) : desc(bookInstance.id),
+      ],
     });
+
+    return {
+      page,
+      pageSize,
+      totalPages: ServiceUtils.calculateTotalPages(
+        dataWithoutLimit.length,
+        pageSize,
+      ),
+      totalItems: dataWithoutLimit.length,
+      order,
+      data,
+    };
   }
 }

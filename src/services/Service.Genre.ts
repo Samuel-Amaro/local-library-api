@@ -3,6 +3,7 @@ import { db } from "../database/connection";
 import { genre } from "../database/schema";
 import { ORDER, PAGE, PAGE_SIZE } from "../Utils";
 import { Order } from "../types";
+import { ServiceUtils } from "./Service.Utils";
 
 export abstract class GenreService {
   static async create(values: { name: string }) {
@@ -14,6 +15,8 @@ export abstract class GenreService {
     pageSize: number = PAGE_SIZE,
     order: Order = ORDER,
   ) {
+    const dataWithoutLimit = await db.select().from(genre);
+
     const data = await db.query.genre.findMany({
       limit: pageSize,
       offset: (page - 1) * pageSize,
@@ -22,9 +25,15 @@ export abstract class GenreService {
         order === "asc" ? asc(genre.id) : desc(genre.id),
       ],
     });
+
     return {
       page,
       pageSize,
+      totalPages: ServiceUtils.calculateTotalPages(
+        dataWithoutLimit.length,
+        pageSize,
+      ),
+      totalItems: dataWithoutLimit.length,
       order,
       data,
     };
