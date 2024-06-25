@@ -7,4 +7,8 @@ export abstract class ServiceUtils {
   static hasKeys<T extends Object>(o: T) {
     return Object.keys(o).length > 0 ? true : false;
   }
+
+  static calculateTotalPages(totalItems: number, itemsPorPage: number) {
+    return Math.ceil(totalItems / itemsPorPage);
+  }
 }
